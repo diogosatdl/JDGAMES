@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source source="LOCAL" name="MySQL - mydb@localhost" uuid="72c8b0af-cffa-4886-a248-96df868f9fb0">
+    <database-info product="MySQL" version="5.6.20" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.31 ( Revision: alexander.soklakov@oracle.com-20140520065950-groqzzbvxprqdmnz )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="mydb"/>
+    <table name="categoria" schema="" catalog="mydb" type="TABLE">
+      <column name="idcategoria" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="categoria" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="idcategoria"/>
+      <exported-key name="fk_produto_categoria" table="produto" schema="" catalog="mydb" columns="categoria"/>
+    </table>
+    <table name="clientes" schema="" catalog="mydb" type="TABLE">
+      <column name="idclientes" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nome" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="CPF" sqlType="VARCHAR" precision="12" scale="0" nullable="false" jdbcType="12"/>
+      <column name="RG" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="senha" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <column name="rua" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="numero" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="bairro" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="cidade" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="CEP" sqlType="VARCHAR" precision="9" scale="0" nullable="false" jdbcType="12"/>
+      <column name="telefone" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="idclientes"/>
+      <exported-key name="fk_pedido_cliente" table="pedido" schema="" catalog="mydb" columns="cliente"/>
+    </table>
+    <table name="itens_pedido" schema="" catalog="mydb" type="TABLE">
+      <column name="pedido" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="produto" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="quantidade" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="valor" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <foreign-key name="fk_itens_pedido" columns="pedido" ref-table="pedido" ref-schema="" ref-catalog="mydb" ref-columns="idpedido" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_itens_produto" columns="produto" ref-table="produto" ref-schema="" ref-catalog="mydb" ref-columns="idproduto" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="fk_itens_pedido_idx" unique="false" columns="pedido"/>
+      <index name="fk_itens_produto_idx" unique="false" columns="produto"/>
+    </table>
+    <table name="pedido" schema="" catalog="mydb" type="TABLE">
+      <column name="idpedido" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="cliente" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="data" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="forma_pag" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="valor_total" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="idpedido"/>
+      <foreign-key name="fk_pedido_cliente" columns="cliente" ref-table="clientes" ref-schema="" ref-catalog="mydb" ref-columns="idclientes" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_itens_pedido" table="itens_pedido" schema="" catalog="mydb" columns="pedido"/>
+      <index name="fk_pedido_cliente_idx" unique="false" columns="cliente"/>
+    </table>
+    <table name="plataforma" schema="" catalog="mydb" type="TABLE">
+      <column name="idplataforma" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="plataforma" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="idplataforma"/>
+      <exported-key name="fk_produto_plataforma" table="produto" schema="" catalog="mydb" columns="plataforma"/>
+    </table>
+    <table name="produto" schema="" catalog="mydb" type="TABLE">
+      <column name="idproduto" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="nome" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="marca_produtora" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="descricao" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="preco_venda" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="quantidade" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="categoria" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="plataforma" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="custo" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="idproduto"/>
+      <foreign-key name="fk_produto_categoria" columns="categoria" ref-table="categoria" ref-schema="" ref-catalog="mydb" ref-columns="idcategoria" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_produto_plataforma" columns="plataforma" ref-table="plataforma" ref-schema="" ref-catalog="mydb" ref-columns="idplataforma" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_itens_produto" table="itens_pedido" schema="" catalog="mydb" columns="produto"/>
+      <index name="fk_produto_categoria_idx" unique="false" columns="categoria"/>
+      <index name="fk_produto_plataforma_idx" unique="false" columns="plataforma"/>
+    </table>
+  </data-source>
+</component>

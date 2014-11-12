@@ -1,0 +1,130 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`categoria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`categoria` (
+  `idcategoria` INT(11) NOT NULL AUTO_INCREMENT,
+  `categoria` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idcategoria`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 19
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`clientes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`clientes` (
+  `idclientes` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(255) NOT NULL,
+  `CPF` VARCHAR(12) NOT NULL,
+  `RG` VARCHAR(10) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `senha` VARCHAR(10) NOT NULL,
+  `rua` VARCHAR(45) NOT NULL,
+  `numero` INT(11) NOT NULL,
+  `bairro` VARCHAR(45) NOT NULL,
+  `cidade` VARCHAR(255) NOT NULL,
+  `CEP` VARCHAR(9) NOT NULL,
+  `telefone` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`idclientes`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`pedido`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`pedido` (
+  `idpedido` INT(11) NOT NULL AUTO_INCREMENT,
+  `cliente` INT(11) NOT NULL,
+  `data` DATE NOT NULL,
+  `forma_pag` VARCHAR(45) NOT NULL,
+  `valor_total` DOUBLE NOT NULL,
+  PRIMARY KEY (`idpedido`),
+  INDEX `fk_pedido_cliente_idx` (`cliente` ASC),
+  CONSTRAINT `fk_pedido_cliente`
+    FOREIGN KEY (`cliente`)
+    REFERENCES `mydb`.`clientes` (`idclientes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`plataforma`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`plataforma` (
+  `idplataforma` INT(11) NOT NULL AUTO_INCREMENT,
+  `plataforma` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idplataforma`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 15
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`produto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`produto` (
+  `idproduto` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  `marca_produtora` VARCHAR(45) NOT NULL,
+  `descricao` TEXT NOT NULL,
+  `preco_venda` DOUBLE NOT NULL,
+  `quantidade` INT(11) NOT NULL,
+  `categoria` INT(11) NOT NULL,
+  `plataforma` INT(11) NOT NULL,
+  `custo` DOUBLE NULL DEFAULT NULL,
+  PRIMARY KEY (`idproduto`),
+  INDEX `fk_produto_plataforma_idx` (`plataforma` ASC),
+  INDEX `fk_produto_categoria_idx` (`categoria` ASC),
+  CONSTRAINT `fk_produto_categoria`
+    FOREIGN KEY (`categoria`)
+    REFERENCES `mydb`.`categoria` (`idcategoria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_produto_plataforma`
+    FOREIGN KEY (`plataforma`)
+    REFERENCES `mydb`.`plataforma` (`idplataforma`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 37
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`itens_pedido`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`itens_pedido` (
+  `pedido` INT(11) NOT NULL,
+  `produto` INT(11) NOT NULL,
+  `quantidade` INT(11) NOT NULL,
+  `valor` DOUBLE NOT NULL,
+  INDEX `fk_itens_pedido_idx` (`pedido` ASC),
+  INDEX `fk_itens_produto_idx` (`produto` ASC),
+  CONSTRAINT `fk_itens_pedido`
+    FOREIGN KEY (`pedido`)
+    REFERENCES `mydb`.`pedido` (`idpedido`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_itens_produto`
+    FOREIGN KEY (`produto`)
+    REFERENCES `mydb`.`produto` (`idproduto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
